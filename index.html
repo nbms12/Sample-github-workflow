@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pawfect Pet Store</title>
+  <!-- Font Awesome for icons (optional but adds charm) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ---------- GLOBAL ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+
+    body {
+      background: #fef9f0;
+      color: #2d2a24;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* animated gradient background overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 40%, rgba(255, 230, 200, 0.3) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 70%, rgba(200, 230, 240, 0.2) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ---------- HEADER ---------- */
+    header {
+      padding: 2rem 0 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #4b3b2b;
+    }
+
+    .logo i {
+      color: #e58e26;
+      font-size: 2.6rem;
+      animation: wiggle 2.5s infinite ease-in-out;
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(12deg); }
+      75% { transform: rotate(-8deg); }
+    }
+
+    .logo span {
+      background: linear-gradient(145deg, #4b3b2b, #7a5e44);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .cart-icon {
+      background: #fff6ea;
+      padding: 0.7rem 1.3rem;
+      border-radius: 50px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 600;
+      color: #4b3b2b;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid #f0e0d0;
+    }
+
+    .cart-icon:hover {
+      background: #ffe7d1;
+      transform: scale(1.02);
+    }
+
+    .cart-icon i {
+      font-size: 1.2rem;
+      color: #e58e26;
+    }
+
+    .cart-count {
+      background: #e58e26;
+      color: white;
+      font-size: 0.85rem;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      transition: transform 0.2s;
+    }
+
+    .cart-count.bump {
+      animation: bump 0.3s ease;
+    }
+
+    @keyframes bump {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.4); }
+      100% { transform: scale(1); }
+    }
+
+    /* ---------- HERO ---------- */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      margin: 1rem 0 2.5rem;
+      flex-wrap: wrap;
+      background: #fff7ee;
+      border-radius: 40px;
+      padding: 2rem 2.5rem;
+      box-shadow: 0 20px 35px -8px rgba(150, 100, 50, 0.15);
+      border: 1px solid #ffe9d9;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '🐾';
+      position: absolute;
+      bottom: -30px;
+      right: -20px;
+      font-size: 12rem;
+      opacity: 0.08;
+      transform: rotate(15deg);
+      pointer-events: none;
+    }
+
+    .hero-text {
+      flex: 1 1 280px;
+    }
+
+    .hero-text h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 0.8rem;
+      color: #2d2a24;
+    }
+
+    .hero-text h1 i {
+      color: #e58e26;
+      font-size: 2.8rem;
+    }
+
+    .hero-text p {
+      font-size: 1.15rem;
+      color: #5f5346;
+      margin-bottom: 1.5rem;
+      max-width: 400px;
+    }
+
+    .btn {
+      background: #e58e26;
+      color: white;
+      border: none;
+      padding: 0.9rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 10px 20px -5px rgba(229, 142, 38, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      letter-spacing: 0.3px;
+    }
+
+    .btn i {
+      transition: transform 0.2s;
+    }
+
+    .btn:hover {
+      background: #d47f1a;
+      transform: translateY(-3px);
+      box-shadow: 0 18px 25px -6px rgba(229, 142, 38, 0.5);
+    }
+
+    .btn:hover i {
+      transform: translateX(4px);
+    }
+
+    .hero-image {
+      flex: 0 1 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-image .pet-emoji {
+      font-size: 9rem;
+      filter: drop-shadow(0 15px 10px rgba(0, 0, 0, 0.08));
+      animation: float 4s infinite ease-in-out;
+      display: inline-block;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(3deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    /* ---------- SECTION TITLE ---------- */
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 2rem 0 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: #3e362e;
+    }
+
+    .section-title i {
+      color: #e58e26;
+      font-size: 2rem;
+    }
+
+    /* ---------- PET GRID ---------- */
+    .pet-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.8rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .pet-card {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 1.5rem 1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 12px 28px -10px rgba(0, 0, 0, 0.08);
+      border: 1px solid #ffe3d0;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      animation: cardFadeIn 0.5s backwards;
+      animation-delay: calc(var(--i) * 0.08s);
+    }
+
+    @keyframes cardFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .pet-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 28px 35px -15px rgba(150, 100, 50, 0.2);
+      border-color: #f7c9a8;
+    }
+
+    .pet-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(90deg, #ffd8b0, #f7b77a, #ffd8b0);
+      background-size: 200% 100%;
+      animation: shimmer 3s infinite linear;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    .pet-emoji-card {
+      font-size: 4.5rem;
+      margin-bottom: 0.5rem;
+      filter: drop-shadow(0 8px 6px rgba(0, 0, 0, 0.05));
+      transition: transform 0.3s;
+    }
+
+    .pet-card:hover .pet-emoji-card {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .pet-card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+      color: #2d2a24;
+    }
+
+    .pet-breed {
+      font-size: 0.85rem;
+      color: #9b8b7a;
+      margin-bottom: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    .pet-price {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #e58e26;
+      margin: 0.4rem 0 0.9rem;
+    }
+
+    .pet-price small {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #b8a38e;
+    }
+
+    .add-btn {
+      background: #f5ede5;
+      border: none;
+      color: #4b3b2b;
+      font-weight: 600;
+      padding: 0.6rem 1.2rem;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+      margin-top: auto;
+      width: 100%;
+      justify-content: center;
+      border: 1px solid #f0dfce;
+    }
+
+    .add-btn i {
+      font-size: 0.9rem;
+      transition: transform 0.2s;
+    }
+
+    .add-btn:hover {
+      background: #e58e26;
+      color: white;
+      border-color: #e58e26;
+      box-shadow: 0 8px 14px -4px rgba(229, 142, 38, 0.4);
+    }
+
+    .add-btn:hover i {
+      transform: scale(1.2);
+    }
+
+    .add-btn.added {
+      background: #8bc34a;
+      color: white;
+      border-color: #8bc34a;
+    }
+
+    /* ---------- CART PANEL (toast style) ---------- */
+    .cart-toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #2d2a24;
+      color: white;
+      padding: 1rem 1.8rem;
+      border-radius: 60px;
+      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transform: translateY(120px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 999;
+      font-weight: 500;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .cart-toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .cart-toast i {
+      color: #ffb347;
+      font-size: 1.5rem;
+    }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      margin-top: 4rem;
+      padding: 2rem 0;
+      text-align: center;
+      color: #a08e7c;
+      border-top: 1px solid #ffe1cc;
+      font-size: 0.95rem;
+    }
+
+    footer i {
+      color: #e58e26;
+      margin: 0 0.2rem;
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 650px) {
+      .hero {
+        padding: 1.8rem 1.5rem;
+        text-align: center;
+        justify-content: center;
+      }
+      .hero-text h1 {
+        font-size: 2.2rem;
+      }
+      .hero-image .pet-emoji {
+        font-size: 6rem;
+      }
+      .section-title {
+        font-size: 1.7rem;
+      }
+      .logo {
+        font-size: 1.8rem;
+      }
+      .logo i {
+        font-size: 2rem;
+      }
+      .cart-toast {
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- header -->
+    <header>
+      <div class="logo">
+        <i class="fas fa-paw"></i>
+        <span>Pawfect</span>
+      </div>
+      <div class="cart-icon" id="cartIcon">
+        <i class="fas fa-shopping-bag"></i>
+        <span>Cart</span>
+        <span class="cart-count" id="cartCount">0</span>
+      </div>
+    </header>
+
+    <!-- hero -->
+    <div class="hero">
+      <div class="hero-text">
+        <h1>Find your <i class="fas fa-heart"></i><br>new best friend</h1>
+        <p>Adorable pets, happy homes. Premium care & love guaranteed.</p>
+        <button class="btn" id="exploreBtn">
+          Explore pets <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+      <div class="hero-image">
+        <span class="pet-emoji">🐶🐱</span>
+      </div>
+    </div>
+
+    <!-- section title -->
+    <div class="section-title">
+      <i class="fas fa-star"></i>
+      <span>Our lovely pets</span>
+    </div>
+
+    <!-- pet grid -->
+    <div class="pet-grid" id="petGrid">
+      <!-- cards will be injected by JS -->
+    </div>
+
+    <!-- footer -->
+    <footer>
+      <i class="fas fa-paw"></i> Pawfect Pet Store — where every pet is family <i class="fas fa-paw"></i>
+    </footer>
+  </div>
+
+  <!-- cart toast notification -->
+  <div class="cart-toast" id="cartToast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">Added to cart!</span>
+  </div>
+
+  <script>
+    (function() {
+      // ---------- PET DATA ----------
+      const pets = [
+        { id: 1, name: 'Luna', breed: 'Golden Retriever', price: 499, emoji: '🐕', type: 'Dog' },
+        { id: 2, name: 'Milo', breed: 'Tabby Cat', price: 199, emoji: '🐈', type: 'Cat' },
+        { id: 3, name: 'Coco', breed: 'French Bulldog', price: 699, emoji: '🐶', type: 'Dog' },
+        { id: 4, name: 'Bella', breed: 'Siamese Cat', price: 249, emoji: '🐱', type: 'Cat' },
+        { id: 5, name: 'Max', breed: 'Beagle', price: 399, emoji: '🐕‍🦺', type: 'Dog' },
+        { id: 6, name: 'Oliver', breed: 'Maine Coon', price: 299, emoji: '🐈‍⬛', type: 'Cat' },
+        { id: 7, name: 'Daisy', breed: 'Pomeranian', price: 549, emoji: '🐩', type: 'Dog' },
+        { id: 8, name: 'Leo', breed: 'Bengal Cat', price: 349, emoji: '🐯', type: 'Cat' }
+      ];
+
+      // ---------- CART STATE ----------
+      let cart = [];          // stores pet objects
+      let totalItems = 0;
+      const cartCountEl = document.getElementById('cartCount');
+      const cartIcon = document.getElementById('cartIcon');
+      const toast = document.getElementById('cartToast');
+      const toastMsg = document.getElementById('toastMessage');
+      const petGrid = document.getElementById('petGrid');
+      const exploreBtn = document.getElementById('exploreBtn');
+
+      // ---------- RENDER PET CARDS ----------
+      function renderPets() {
+        let html = '';
+        pets.forEach((pet, index) => {
+          html += `
+            <div class="pet-card" style="--i: ${index};" data-id="${pet.id}">
+              <div class="pet-emoji-card">${pet.emoji}</div>
+              <h3>${pet.name}</h3>
+              <div class="pet-breed">${pet.breed}</div>
+              <div class="pet-price">$${pet.price} <small>USD</small></div>
+              <button class="add-btn" data-id="${pet.id}">
+                <i class="fas fa-plus-circle"></i> Add to cart
+              </button>
+            </div>
+          `;
+        });
+        petGrid.innerHTML = html;
+      }
+
+      // ---------- UPDATE CART COUNT & ANIMATION ----------
+      function updateCartCount() {
+        totalItems = cart.length;
+        cartCountEl.textContent = totalItems;
+        // bump animation
+        cartCountEl.classList.add('bump');
+        setTimeout(() => cartCountEl.classList.remove('bump'), 300);
+      }
+
+      // ---------- SHOW TOAST NOTIFICATION ----------
+      function showToast(message, isSuccess = true) {
+        toastMsg.textContent = message;
+        toast.style.background = isSuccess ? '#2d2a24' : '#b33e3e';
+        toast.classList.add('show');
+        // clear any previous timeout
+        if (window.toastTimeout) clearTimeout(window.toastTimeout);
+        window.toastTimeout = setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2200);
+      }
+
+      // ---------- ADD TO CART ----------
+      function addToCart(petId) {
+        const pet = pets.find(p => p.id === petId);
+        if (!pet) return;
+
+        // check if already in cart (optional: prevent duplicates, but we can allow duplicates)
+        // Let's allow duplicates (user can add multiple of same pet) — but show total count
+        cart.push(pet);
+        updateCartCount();
+
+        // change button state temporarily
+        const btn = document.querySelector(`.add-btn[data-id="${petId}"]`);
+        if (btn) {
+          btn.classList.add('added');
+          btn.innerHTML = `<i class="fas fa-check"></i> Added!`;
+          setTimeout(() => {
+            btn.classList.remove('added');
+            btn.innerHTML = `<i class="fas fa-plus-circle"></i> Add to cart`;
+          }, 1200);
+        }
+
+        // show toast with pet name
+        showToast(`${pet.name} added to cart! 🐾`);
+      }
+
+      // ---------- ATTACH EVENT LISTENERS (delegation) ----------
+      function attachEvents() {
+        // add buttons (using event delegation on grid)
+        petGrid.addEventListener('click', (e) => {
+          const addBtn = e.target.closest('.add-btn');
+          if (addBtn) {
+            e.preventDefault();
+            const id = parseInt(addBtn.getAttribute('data-id'));
+            addToCart(id);
+          }
+        });
+
+        // cart icon click — show a summary toast
+        cartIcon.addEventListener('click', () => {
+          if (cart.length === 0) {
+            showToast('Your cart is empty. Add some pets! 🐶', false);
+          } else {
+            const uniqueNames = [...new Set(cart.map(p => p.name))].join(', ');
+            showToast(`🛒 Cart: ${cart.length} pet(s) — ${uniqueNames}`, true);
+          }
+        });
+
+        // explore button scrolls to pets
+        exploreBtn.addEventListener('click', () => {
+          document.querySelector('.section-title').scrollIntoView({ behavior: 'smooth' });
+        });
+      }
+
+      // ---------- INIT ----------
+      function init() {
+        renderPets();
+        attachEvents();
+        updateCartCount();   // initialize to 0
+        // show a little welcome toast after a short delay
+        setTimeout(() => {
+          showToast('Welcome to Pawfect! 🐕🐈', true);
+        }, 600);
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
