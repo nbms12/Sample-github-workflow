@@ -1,9 +1,23 @@
-print("Hello World!")
 
-name = "Irfan"
-print("Welcome", name)
+import random
 
-a = 10
-b = 20
+print("🎮 WELCOME TO NUMBER GUESSING GAME!")
+print("I am thinking of a number between 1 and 20.")
 
-print("Addition:", a + b)
+secret_number = random.randint(1, 20)
+attempts = 0
+
+while True:
+    guess = int(input("Enter your guess: "))
+    attempts += 1
+
+    if guess < secret_number:
+        print("Too low! Try again.")
+    elif guess > secret_number:
+        print("Too high! Try again.")
+    else:
+        print("🎉 Congratulations! You won!")
+        print("Number of attempts:", attempts)
+        break
+
+print("Thanks for playing!")
