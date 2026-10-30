@@ -1,0 +1,1 @@
+print("Ethnotech Training!")
